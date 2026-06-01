@@ -199,6 +199,16 @@ input {
   margin: 0 0 30px;
 }
 
+.results h1::after {
+  color: var(--muted);
+  content: attr(data-status);
+  display: inline-block;
+  font-size: 14px;
+  font-weight: 600;
+  margin-left: 18px;
+  vertical-align: middle;
+}
+
 .accent-line {
   background:
     linear-gradient(90deg, var(--accent) 0 132px, var(--line) 132px 100%);

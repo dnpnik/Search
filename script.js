@@ -2,6 +2,11 @@ const form = document.querySelector("#search-form");
 const whereInput = document.querySelector("#where-input");
 const whatInput = document.querySelector("#what-input");
 const resultList = document.querySelector("#result-list");
+const resultsTitle = document.querySelector("#results-title");
+
+const setSaveStatus = (message) => {
+  resultsTitle.dataset.status = message;
+};
 
 const makeRow = ({ query, place, count, time }) => {
   const row = document.createElement("article");
@@ -31,7 +36,23 @@ const makeRow = ({ query, place, count, time }) => {
   return row;
 };
 
-form.addEventListener("submit", (event) => {
+const saveSearchResult = async (result) => {
+  const response = await fetch("/api/search-results", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(result),
+  });
+
+  if (!response.ok) {
+    throw new Error("Search result was not saved");
+  }
+
+  return response.json();
+};
+
+form.addEventListener("submit", async (event) => {
   event.preventDefault();
 
   const where = whereInput.value.trim();
@@ -47,13 +68,24 @@ form.addEventListener("submit", (event) => {
   }).format(new Date());
 
   const count = Math.max(7, Math.floor(Math.random() * 130));
-  resultList.prepend(makeRow({
+  const result = {
     query: what,
     place: where,
     count,
     time: `Сегодня, ${now}`,
-  }));
+    savedAt: new Date().toISOString(),
+  };
+
+  resultList.prepend(makeRow(result));
+  setSaveStatus("Сохранение...");
 
   form.reset();
   whereInput.focus();
+
+  try {
+    await saveSearchResult(result);
+    setSaveStatus("Сохранено на ПК");
+  } catch {
+    setSaveStatus("Локальный сервер не запущен");
+  }
 });
