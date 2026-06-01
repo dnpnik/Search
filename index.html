@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Search</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <header class="topbar" aria-label="Верхняя панель">
+      <a class="brand" href="#" aria-label="Search">Search</a>
+      <nav class="top-actions" aria-label="Действия">
+        <button class="icon-button" type="button" aria-label="История">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="12" cy="12" r="9"></circle>
+            <path d="M12 7v5l3 2"></path>
+          </svg>
+        </button>
+        <button class="icon-button" type="button" aria-label="Меню">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M4 7h16M4 12h16M4 17h16"></path>
+          </svg>
+        </button>
+      </nav>
+    </header>
+
+    <main class="page-shell">
+      <section class="search-area" aria-label="Форма поиска">
+        <form class="search-form" id="search-form">
+          <label class="field" for="where-input">
+            <span>Где искать</span>
+            <span class="input-shell">
+              <svg class="field-icon" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M12 21s7-5.3 7-12a7 7 0 1 0-14 0c0 6.7 7 12 7 12Z"></path>
+                <circle cx="12" cy="9" r="2.5"></circle>
+              </svg>
+              <input
+                id="where-input"
+                name="where"
+                type="text"
+                autocomplete="off"
+                placeholder="Введите место поиска"
+                required
+              >
+            </span>
+          </label>
+
+          <label class="field" for="what-input">
+            <span>Что искать</span>
+            <span class="input-shell">
+              <svg class="field-icon" viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="11" cy="11" r="7"></circle>
+                <path d="m20 20-4-4"></path>
+              </svg>
+              <input
+                id="what-input"
+                name="what"
+                type="search"
+                autocomplete="off"
+                placeholder="Введите запрос"
+                required
+              >
+            </span>
+          </label>
+
+          <button class="search-button" type="submit">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <circle cx="11" cy="11" r="7"></circle>
+              <path d="m20 20-4-4"></path>
+            </svg>
+            Начать поиск
+          </button>
+        </form>
+      </section>
+
+      <section class="results" aria-labelledby="results-title">
+        <h1 id="results-title">Результаты</h1>
+        <div class="accent-line" aria-hidden="true"></div>
+
+        <div class="results-table" role="table" aria-label="История результатов">
+          <div class="table-head" role="row">
+            <span role="columnheader">Запрос</span>
+            <span role="columnheader">Где искали</span>
+            <span role="columnheader">Результатов</span>
+            <span role="columnheader">Время</span>
+            <span role="columnheader" aria-label="Действия"></span>
+          </div>
+
+          <div class="table-body" id="result-list">
+            <article class="result-row" role="row">
+              <div class="query-cell" role="cell">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <circle cx="12" cy="12" r="9"></circle>
+                  <path d="M12 7v5l3 2"></path>
+                </svg>
+                <strong>годовой отчет 2023</strong>
+              </div>
+              <div class="place-cell" role="cell">Корпоративный портал</div>
+              <div role="cell"><span class="count-pill">128</span></div>
+              <div role="cell">Сегодня, 10:24</div>
+              <button class="row-menu" type="button" aria-label="Действия для годовой отчет 2023">...</button>
+            </article>
+
+            <article class="result-row" role="row">
+              <div class="query-cell" role="cell">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <circle cx="12" cy="12" r="9"></circle>
+                  <path d="M12 7v5l3 2"></path>
+                </svg>
+                <strong>договор поставки</strong>
+              </div>
+              <div class="place-cell" role="cell">Документы / Договоры</div>
+              <div role="cell"><span class="count-pill">56</span></div>
+              <div role="cell">Вчера, 16:45</div>
+              <button class="row-menu" type="button" aria-label="Действия для договор поставки">...</button>
+            </article>
+
+            <article class="result-row" role="row">
+              <div class="query-cell" role="cell">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <circle cx="12" cy="12" r="9"></circle>
+                  <path d="M12 7v5l3 2"></path>
+                </svg>
+                <strong>маркетинговая стратегия</strong>
+              </div>
+              <div class="place-cell" role="cell">Общие диски / Маркетинг</div>
+              <div role="cell"><span class="count-pill">23</span></div>
+              <div role="cell">Вчера, 11:12</div>
+              <button class="row-menu" type="button" aria-label="Действия для маркетинговая стратегия">...</button>
+            </article>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+</html>
