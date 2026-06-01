@@ -55,6 +55,17 @@ const loadResults = async () => {
   }
 };
 
+const getResultFileName = (result) => {
+  const timestamp = new Date(result.savedAt).toISOString().replace(/[:.]/g, "-");
+  const querySlug = result.query
+    .toLowerCase()
+    .replace(/[^a-zа-я0-9]+/gi, "-")
+    .replace(/^-|-$/g, "")
+    .slice(0, 40) || "search";
+
+  return `${timestamp}-${querySlug}.json`;
+};
+
 const saveResult = async (result) => {
   const cleanResult = {
     query: String(result.query || "").trim(),
@@ -72,8 +83,14 @@ const saveResult = async (result) => {
   const results = await loadResults();
   results.unshift(cleanResult);
   await fs.writeFile(saveFile, `${JSON.stringify(results, null, 2)}\n`, "utf-8");
+  const resultFile = path.join(saveDir, getResultFileName(cleanResult));
+  await fs.writeFile(resultFile, `${JSON.stringify(cleanResult, null, 2)}\n`, "utf-8");
 
-  return cleanResult;
+  return {
+    result: cleanResult,
+    file: resultFile,
+    historyFile: saveFile,
+  };
 };
 
 const serveStatic = async (request, response) => {
@@ -98,8 +115,8 @@ const serveStatic = async (request, response) => {
 const server = http.createServer(async (request, response) => {
   try {
     if (request.method === "POST" && request.url === "/api/search-results") {
-      const result = await saveResult(await readJsonBody(request));
-      send(response, 201, JSON.stringify({ ok: true, result }), "application/json; charset=utf-8");
+      const saved = await saveResult(await readJsonBody(request));
+      send(response, 201, JSON.stringify({ ok: true, ...saved }), "application/json; charset=utf-8");
       return;
     }
 

@@ -3,6 +3,9 @@ const whereInput = document.querySelector("#where-input");
 const whatInput = document.querySelector("#what-input");
 const resultList = document.querySelector("#result-list");
 const resultsTitle = document.querySelector("#results-title");
+const searchButton = document.querySelector(".search-button");
+const saveButton = document.querySelector("#save-button");
+let latestResultJson = "";
 
 const setSaveStatus = (message) => {
   resultsTitle.dataset.status = message;
@@ -52,14 +55,31 @@ const saveSearchResult = async (result) => {
   return response.json();
 };
 
-form.addEventListener("submit", async (event) => {
-  event.preventDefault();
+const setLatestResult = (result) => {
+  latestResultJson = JSON.stringify(result);
+  saveButton.dataset.result = latestResultJson;
+};
 
+const getLatestResult = () => {
+  const resultJson = saveButton.dataset.result || latestResultJson;
+
+  if (!resultJson) {
+    return null;
+  }
+
+  try {
+    return JSON.parse(resultJson);
+  } catch {
+    return null;
+  }
+};
+
+const buildResultFromInputs = () => {
   const where = whereInput.value.trim();
   const what = whatInput.value.trim();
 
   if (!where || !what) {
-    return;
+    return null;
   }
 
   const now = new Intl.DateTimeFormat("ru-RU", {
@@ -75,17 +95,55 @@ form.addEventListener("submit", async (event) => {
     time: `Сегодня, ${now}`,
     savedAt: new Date().toISOString(),
   };
+};
+
+const runSearch = () => {
+  const result = buildResultFromInputs();
+
+  if (!result) {
+    setSaveStatus("Заполните оба поля");
+    return false;
+  }
 
   resultList.prepend(makeRow(result));
-  setSaveStatus("Сохранение...");
+  setLatestResult(result);
+  setSaveStatus("Нажмите «Сохранить»");
 
   form.reset();
   whereInput.focus();
+  return true;
+};
+
+form.addEventListener("submit", (event) => {
+  event.preventDefault();
+  runSearch();
+});
+
+searchButton.addEventListener("click", (event) => {
+  event.preventDefault();
+  runSearch();
+});
+
+saveButton.addEventListener("click", async () => {
+  const result = getLatestResult() || buildResultFromInputs();
+
+  if (!result) {
+    setSaveStatus("Сначала заполните поля");
+    whereInput.focus();
+    return;
+  }
+
+  setSaveStatus("Сохранение...");
+  saveButton.disabled = true;
 
   try {
     await saveSearchResult(result);
     setSaveStatus("Сохранено на ПК");
+    latestResultJson = "";
+    delete saveButton.dataset.result;
   } catch {
     setSaveStatus("Локальный сервер не запущен");
+  } finally {
+    saveButton.disabled = false;
   }
 });

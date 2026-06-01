@@ -15,3 +15,5 @@ Search results are saved on this PC in:
 ```text
 saved-results/search-results.json
 ```
+
+Each click on `Сохранить` also creates a separate `.json` file in `saved-results/`.

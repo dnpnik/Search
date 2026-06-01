@@ -69,6 +69,7 @@ input {
 
 .icon-button svg,
 .search-button svg,
+.save-button svg,
 .field-icon,
 .query-cell svg {
   fill: none;
@@ -156,22 +157,37 @@ input {
   color: #8d939d;
 }
 
-.search-button {
+.form-actions {
+  display: grid;
+  gap: 12px;
+}
+
+.search-button,
+.save-button {
   align-items: center;
-  background: var(--accent);
   border: 0;
   border-radius: 5px;
-  color: #ffffff;
   cursor: pointer;
   display: inline-flex;
-  font-size: 23px;
+  font-size: 21px;
   font-weight: 760;
   gap: 15px;
-  height: 78px;
+  height: 48px;
   justify-content: center;
   padding: 0 28px;
   transition: background 160ms ease, box-shadow 160ms ease, transform 160ms ease;
   white-space: nowrap;
+}
+
+.search-button {
+  background: var(--accent);
+  color: #ffffff;
+}
+
+.save-button {
+  background: #ffffff;
+  border: 1px solid var(--accent);
+  color: var(--accent);
 }
 
 .search-button:hover {
@@ -180,17 +196,25 @@ input {
   transform: translateY(-1px);
 }
 
+.save-button:hover {
+  background: var(--accent-soft);
+  box-shadow: 0 12px 28px rgba(0, 137, 125, 0.14);
+  transform: translateY(-1px);
+}
+
 .search-button:focus-visible,
+.save-button:focus-visible,
 .icon-button:focus-visible,
 .row-menu:focus-visible {
   outline: 4px solid var(--accent-soft);
   outline-offset: 3px;
 }
 
-.search-button svg {
-  height: 31px;
+.search-button svg,
+.save-button svg {
+  height: 25px;
   stroke-width: 2.4;
-  width: 31px;
+  width: 25px;
 }
 
 .results h1 {
@@ -314,7 +338,8 @@ input {
     grid-template-columns: 1fr;
   }
 
-  .search-button {
+  .search-button,
+  .save-button {
     width: 100%;
   }
 
@@ -368,7 +393,8 @@ input {
     font-size: 18px;
   }
 
-  .search-button {
+  .search-button,
+  .save-button {
     font-size: 20px;
   }
 }
